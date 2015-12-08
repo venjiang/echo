@@ -2,6 +2,23 @@
 
 A fast and unfancy micro web framework for Go.
 
+## Add Features
+- Context `ViewData` store
+- Context `View(code int, name string)`    
+```
+func View(c *echo.Context) error{
+	c.ViewData["vd1"]="vd1字符串"
+	data:= make(map[string]interface{})
+	data["number"]=123
+	data["str"]="string"
+	c.ViewData["vd2"]=data
+	return c.View(http.StatusOK,"default/view.html")
+
+}
+```
+
+see demo directory
+
 ## Features
 
 - Fast HTTP router which smartly prioritize routes.

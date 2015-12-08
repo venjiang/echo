@@ -56,10 +56,10 @@ type (
 	Handler        interface{}
 	HandlerFunc    func(*Context) error
 
-	// HTTPErrorHandler is a centralized HTTP error handler.
+// HTTPErrorHandler is a centralized HTTP error handler.
 	HTTPErrorHandler func(error, *Context)
 
-	// Binder is the interface that wraps the Bind method.
+// Binder is the interface that wraps the Bind method.
 	Binder interface {
 		Bind(*http.Request, interface{}) error
 	}
@@ -67,81 +67,81 @@ type (
 	binder struct {
 	}
 
-	// Validator is the interface that wraps the Validate method.
+// Validator is the interface that wraps the Validate method.
 	Validator interface {
 		Validate() error
 	}
 
-	// Renderer is the interface that wraps the Render method.
+// Renderer is the interface that wraps the Render method.
 	Renderer interface {
 		Render(w io.Writer, name string, data interface{}) error
 	}
 )
 
 const (
-	// CONNECT HTTP method
+// CONNECT HTTP method
 	CONNECT = "CONNECT"
-	// DELETE HTTP method
+// DELETE HTTP method
 	DELETE = "DELETE"
-	// GET HTTP method
+// GET HTTP method
 	GET = "GET"
-	// HEAD HTTP method
+// HEAD HTTP method
 	HEAD = "HEAD"
-	// OPTIONS HTTP method
+// OPTIONS HTTP method
 	OPTIONS = "OPTIONS"
-	// PATCH HTTP method
+// PATCH HTTP method
 	PATCH = "PATCH"
-	// POST HTTP method
+// POST HTTP method
 	POST = "POST"
-	// PUT HTTP method
+// PUT HTTP method
 	PUT = "PUT"
-	// TRACE HTTP method
+// TRACE HTTP method
 	TRACE = "TRACE"
 
-	//-------------
-	// Media types
-	//-------------
+//-------------
+// Media types
+//-------------
 
-	ApplicationJSON                  = "application/json"
-	ApplicationJSONCharsetUTF8       = ApplicationJSON + "; " + CharsetUTF8
-	ApplicationJavaScript            = "application/javascript"
+	ApplicationJSON = "application/json"
+	ApplicationJSONCharsetUTF8 = ApplicationJSON + "; " + CharsetUTF8
+	ApplicationJavaScript = "application/javascript"
 	ApplicationJavaScriptCharsetUTF8 = ApplicationJavaScript + "; " + CharsetUTF8
-	ApplicationXML                   = "application/xml"
-	ApplicationXMLCharsetUTF8        = ApplicationXML + "; " + CharsetUTF8
-	ApplicationForm                  = "application/x-www-form-urlencoded"
-	ApplicationProtobuf              = "application/protobuf"
-	ApplicationMsgpack               = "application/msgpack"
-	TextHTML                         = "text/html"
-	TextHTMLCharsetUTF8              = TextHTML + "; " + CharsetUTF8
-	TextPlain                        = "text/plain"
-	TextPlainCharsetUTF8             = TextPlain + "; " + CharsetUTF8
-	MultipartForm                    = "multipart/form-data"
+	ApplicationXML = "application/xml"
+	ApplicationXMLCharsetUTF8 = ApplicationXML + "; " + CharsetUTF8
+	ApplicationForm = "application/x-www-form-urlencoded"
+	ApplicationProtobuf = "application/protobuf"
+	ApplicationMsgpack = "application/msgpack"
+	TextHTML = "text/html"
+	TextHTMLCharsetUTF8 = TextHTML + "; " + CharsetUTF8
+	TextPlain = "text/plain"
+	TextPlainCharsetUTF8 = TextPlain + "; " + CharsetUTF8
+	MultipartForm = "multipart/form-data"
 
-	//---------
-	// Charset
-	//---------
+//---------
+// Charset
+//---------
 
 	CharsetUTF8 = "charset=utf-8"
 
-	//---------
-	// Headers
-	//---------
+//---------
+// Headers
+//---------
 
-	AcceptEncoding     = "Accept-Encoding"
-	Authorization      = "Authorization"
+	AcceptEncoding = "Accept-Encoding"
+	Authorization = "Authorization"
 	ContentDisposition = "Content-Disposition"
-	ContentEncoding    = "Content-Encoding"
-	ContentLength      = "Content-Length"
-	ContentType        = "Content-Type"
-	Location           = "Location"
-	Upgrade            = "Upgrade"
-	Vary               = "Vary"
-	WWWAuthenticate    = "WWW-Authenticate"
-	XForwardedFor      = "X-Forwarded-For"
-	XRealIP            = "X-Real-IP"
-	//-----------
-	// Protocols
-	//-----------
+	ContentEncoding = "Content-Encoding"
+	ContentLength = "Content-Length"
+	ContentType = "Content-Type"
+	Location = "Location"
+	Upgrade = "Upgrade"
+	Vary = "Vary"
+	WWWAuthenticate = "WWW-Authenticate"
+	XForwardedFor = "X-Forwarded-For"
+	XRealIP = "X-Real-IP"
+//-----------
+// Protocols
+//-----------
 
 	WebSocket = "websocket"
 
@@ -161,17 +161,17 @@ var (
 		TRACE,
 	}
 
-	//--------
-	// Errors
-	//--------
+//--------
+// Errors
+//--------
 
-	UnsupportedMediaType  = errors.New("unsupported media type")
+	UnsupportedMediaType = errors.New("unsupported media type")
 	RendererNotRegistered = errors.New("renderer not registered")
-	InvalidRedirectCode   = errors.New("invalid redirect status code")
+	InvalidRedirectCode = errors.New("invalid redirect status code")
 
-	//----------------
-	// Error handlers
-	//----------------
+//----------------
+// Error handlers
+//----------------
 
 	notFoundHandler = func(c *Context) error {
 		return NewHTTPError(http.StatusNotFound)
@@ -403,7 +403,7 @@ func (e *Echo) Static(path, dir string) {
 
 // ServeDir serves files from a directory.
 func (e *Echo) ServeDir(path, dir string) {
-	e.Get(path+"*", func(c *Context) error {
+	e.Get(path + "*", func(c *Context) error {
 		return e.serveFile(dir, c.P(0), c) // Param `_*`
 	})
 }
@@ -577,6 +577,7 @@ func (e *Echo) RunTLSServer(s *http.Server, crtFile, keyFile string) {
 }
 
 func (e *Echo) run(s *http.Server, files ...string) {
+	log.Info("Listening and serving HTTP on %s", s.Addr)
 	s.Handler = e
 	// TODO: Remove in Go 1.6+
 	if e.http2 {

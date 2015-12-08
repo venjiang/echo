@@ -28,6 +28,7 @@ type (
 		query    url.Values
 		store    store
 		echo     *Echo
+		ViewData store
 	}
 	store map[string]interface{}
 )
@@ -40,6 +41,7 @@ func NewContext(req *http.Request, res *Response, e *Echo) *Context {
 		echo:     e,
 		pvalues:  make([]string, *e.maxParam),
 		store:    make(store),
+		ViewData: make(store),
 	}
 }
 
@@ -130,6 +132,11 @@ func (c *Context) Render(code int, name string, data interface{}) (err error) {
 	c.response.WriteHeader(code)
 	c.response.Write(buf.Bytes())
 	return
+}
+
+func (c *Context) View(code int, name string) (err error){
+	data := c.ViewData
+	return c.Render(code, name, data)
 }
 
 // HTML sends an HTTP response with status code.
